@@ -57,9 +57,9 @@ class ViewController: UIViewController {
     func SecondScene() {
         let secondVC = SecondViewController()
         secondVC.modalPresentationStyle = .fullScreen
+        nameOfUser = String((nameOfUser ?? "").prefix(40))
         secondVC.nameOfUser = self.nameOfUser
         self.navigationController?.pushViewController(secondVC, animated: true)
     }
-
 }
 

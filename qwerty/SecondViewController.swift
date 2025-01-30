@@ -16,6 +16,8 @@ class SecondViewController: UIViewController {
     
     var nameOfUser: String?
     var isOn: Bool = false
+    var sliderValue: Float = 0
+    var colorIndex: Int = 0
     let colors = ["Mint", "Teal", "Gray"]
     let colorMap: [String: UIColor] = [
         "Mint": .systemMint,
@@ -25,9 +27,9 @@ class SecondViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = colorMap[colors[0]]
+        self.view.backgroundColor = colorMap[colors[colorIndex]]
         
-        isOn = UserDefaults.standard.value(forKey: "isOn") as? Bool ?? true
+        setUserDefaults()
         
         doLabel()
         doSwitch()
@@ -35,22 +37,32 @@ class SecondViewController: UIViewController {
         doSlider()
     }
     
+    func setUserDefaults() {
+        isOn = UserDefaults.standard.value(forKey: "isOn") as? Bool ?? true
+        sliderValue = UserDefaults.standard.value(forKey: "sliderValue") as? Float ?? 0
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UserDefaults.standard.set(isOn, forKey: "isOn")
+        UserDefaults.standard.set(sliderValue, forKey: "sliderValue")
     }
     
     func doLabel() {
         label.font = .systemFont(ofSize: 24)
         label.textColor = .systemBackground
         label.textAlignment = .center
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         //label.frame = CGRect(x: 100, y: 100, width: 200, height: 50)
         self.view.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50)
+            label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     
@@ -95,15 +107,16 @@ class SecondViewController: UIViewController {
     }
     
     func doSlider() {
-        slider.minimumValue = 0
-        slider.maximumValue = 100
-        //slider.value = 50
+        slider.minimumValue = 24
+        slider.maximumValue = 60
+        slider.value = sliderValue
+        sliderValueChanged()
         self.view.addSubview(slider)
         
         slider.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             slider.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            slider.bottomAnchor.constraint(equalTo: label.topAnchor, constant: -100),
+            slider.bottomAnchor.constraint(equalTo: label.topAnchor, constant: -75),
             slider.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7)
         ])
         
@@ -111,7 +124,9 @@ class SecondViewController: UIViewController {
     }
     
     @objc func sliderValueChanged() {
-        view.backgroundColor = view.backgroundColor?.withAlphaComponent(1 - CGFloat(slider.value) / 100)
+        sliderValue = slider.value
+        label.font = .systemFont(ofSize: CGFloat(slider.value))
+        //view.backgroundColor = view.backgroundColor?.withAlphaComponent(1 - CGFloat(slider.value) / 100)
     }
 }
 
