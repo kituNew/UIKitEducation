@@ -1,2 +1,2 @@
-СМ лучший проект: Athchiments
-https://github.com/kituNew/Athchivments
+СМ лучший проект: Achievements
+https://github.com/kituNew/Achievements
