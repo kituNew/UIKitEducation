@@ -1,4 +1,6 @@
-СМ лучший проект: Achievements, ManagerOfSpending
-
+СМ лучший проект: 
+Achievements
 https://github.com/kituNew/Achievements
+
+ManagerOfSpending
 https://github.com/kituNew/ManagerOfSpending
